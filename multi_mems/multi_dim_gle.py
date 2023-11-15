@@ -533,10 +533,11 @@ class multi_dim_gle:
         
         #fe=-np.log(hist[np.nonzero(hist)]) #in units of kT!
         fe=-np.log(hist) #in units of kT!
-        fe[fe == np.nan] = np.nanmax(fe[fe != np.nan])
+        #fe[fe == np.nan] = np.nanmax(fe[fe != np.nan])
+        fe[np.where(fe == np.inf)] = np.nanmax(fe[fe != np.inf]) #in general zero
 
         fe-=np.min(fe)
-        
+
         fe_spline=interpolate.splrep(pos, fe, s=0, per=0)
 
         dxf=pos[1]-pos[0]
