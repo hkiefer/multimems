@@ -528,13 +528,16 @@ class multi_dim_gle:
         hist,edges=np.histogram(x, bins=self.bins, density=True)
         pos =(edges[1:]+edges[:-1])/2
         
-        pos = pos[np.nonzero(hist)]
-        hist = hist[np.nonzero(hist)]
+        #pos = pos[np.nonzero(hist)]
+        #hist = hist[np.nonzero(hist)]
         
-        fe=-np.log(hist[np.nonzero(hist)]) #in units of kT!
+        #fe=-np.log(hist[np.nonzero(hist)]) #in units of kT!
+        fe=-np.log(hist) #in units of kT!
         fe-=np.min(fe)
 
         fe_spline=interpolate.splrep(pos, fe, s=0, per=0)
+
+        fe[fe == np.nan] = np.nanmax(fe[fe != np.nan])
 
         dxf=pos[1]-pos[0]
         xfine=np.arange(pos[0],pos[-1],dxf/10.)
