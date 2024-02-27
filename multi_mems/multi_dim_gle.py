@@ -344,7 +344,7 @@ class multi_dim_gle:
                         kernel_matrix.T[i][j]  = np.gradient(ikernel_matrix_half.T[i][j],self.dt)  
 
             kernel_matrix[-2:]*=0
-
+            ikernel_matrix[:-1] = (ikernel_matrix_half[1:] + ikernel_matrix_half[:-1])/2
         else:
         
             prefac_mat = np.linalg.inv(v_corr_matrix[0])
