@@ -77,7 +77,7 @@ class multi_dim_gle:
         return pos_arrays,fe_arrays
     
     #https://www.pnas.org/doi/abs/10.1073/pnas.2023856118
-    def compute_correlations_G(self,xvaf): #all columns of xvaf has to include the same time steps!!
+    def compute_correlations_G(self,xvaf,normalize_force_corr=False): #all columns of xvaf has to include the same time steps!!
         #if mkl: #uses faster correlation function, but need to installed first
             #correlation = correlation_fast
         #self.n_dim = int(xvaf.shape[1]/4)
@@ -203,7 +203,13 @@ class multi_dim_gle:
                         v_corr_matrix.T[i][j] = (v_corr_matrix.T[i][j] + v_corr_matrix.T[j][i])/2
                         v_corr_matrix.T[j][i] = v_corr_matrix.T[i][j]
 
-                        
+
+        if normalize_force_corr:
+            for i in range(self.n_dim):
+                norm_fac = xU_corr_matrix[0,i,i]
+                for j in range(self.n_dim):
+                    xU_corr_matrix[:,i,j] = xU_corr_matrix[:,i,j]/norm_fac
+        
         if self.plot:
             if self.verbose:
                 print('plot correlation matrices...')

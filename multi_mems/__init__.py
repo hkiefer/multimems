@@ -15,7 +15,7 @@ def ver():
     """
     Show the module version.
     """
-    print("This is multi_mems version 1.05")
+    print("This is multi_mems version 1.6")
 
 
 def xframe(x, time, fix_time=True, round_time=1.e-5, dt=-1):
