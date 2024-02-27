@@ -345,7 +345,7 @@ class multi_dim_gle:
 
             kernel_matrix[-2:]*=0
             ikernel_matrix[:-1] = (ikernel_matrix_half[1:] + ikernel_matrix_half[:-1])/2
-            ikernel_matrix[-1] = ikernel_matrix[-2]
+            
         else:
         
             prefac_mat = np.linalg.inv(v_corr_matrix[0])
