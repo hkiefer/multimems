@@ -343,7 +343,7 @@ class multi_dim_gle:
 
                         kernel_matrix.T[i][j]  = np.gradient(ikernel_matrix_half.T[i][j],self.dt)  
 
-            kernel_matrix[:-2]*=0
+            kernel_matrix[-2:]*=0
 
         else:
         
