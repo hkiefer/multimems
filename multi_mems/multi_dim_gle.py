@@ -599,7 +599,7 @@ class multi_dim_gle:
 
         return pos1,pos2,hist,fe,force1,force2,force_func1,force_func2,force_array
 
-            
+        '''
         if self.plot:
             plt.imshow(fe, cmap=plt.cm.jet, interpolation='spline16', extent = [np.min(pos1) , np.max(pos1), np.min(pos2) , np.max(pos2)])
             plt.xlabel('x1')
@@ -608,34 +608,8 @@ class multi_dim_gle:
             plt.show()
 
         return pos1,pos2,hist,fe,fe_spline, xfine1,xfine2, fe_fine,force_funcs
+        '''   
     
-    
-    def smooth_data(self,t,data,start=0,end = -1,step =1):
-        x = data.copy()
-        if end == -1:
-            end = len(x)
-        for i in range(self.n_dim):
-            for j in range(self.n_dim):
-                xx = x.T[i][j][start:end]
-                
-                tt = t[start:end]
-
-                x_points = np.zeros(int(len(xx)/step))
-                x_points[0] = xx[0]
-
-                t_points = np.zeros(int(len(tt)/step))
-                t_points[0] = tt[0]
-                for k in range(1,len(x_points)):
-                    x_points[k] = np.mean(xx[int(step*(1+2*(k-1)/2)):int(step*(1+2*(k)/2))])
-                    t_points[k] = np.mean(tt[int(step*(1+2*(k-1)/2)):int(step*(1+2*(k)/2))])
-
-                spl = interpolate.UnivariateSpline(t_points, x_points,k=2,s=0)
-                
-                x.T[i][j][start:end]= spl(tt)
-                
-        return x
-
-
     #Jan Daldrop's method 
     #https://www.pnas.org/doi/abs/10.1073/pnas.1722327115
 
@@ -1002,4 +976,32 @@ class multi_dim_gle:
                 plt.show()
             
         return t, ikernel_matrix, kernel_matrix
+    
+
+    def smooth_data(self,t,data,start=0,end = -1,step =1):
+        x = data.copy()
+        if end == -1:
+            end = len(x)
+        for i in range(self.n_dim):
+            for j in range(self.n_dim):
+                xx = x.T[i][j][start:end]
+                
+                tt = t[start:end]
+
+                x_points = np.zeros(int(len(xx)/step))
+                x_points[0] = xx[0]
+
+                t_points = np.zeros(int(len(tt)/step))
+                t_points[0] = tt[0]
+                for k in range(1,len(x_points)):
+                    x_points[k] = np.mean(xx[int(step*(1+2*(k-1)/2)):int(step*(1+2*(k)/2))])
+                    t_points[k] = np.mean(tt[int(step*(1+2*(k-1)/2)):int(step*(1+2*(k)/2))])
+
+                spl = interpolate.UnivariateSpline(t_points, x_points,k=2,s=0)
+                
+                x.T[i][j][start:end]= spl(tt)
+                
+        return x
+
+
     
