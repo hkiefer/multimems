@@ -7,15 +7,16 @@ from collections import OrderedDict
 
 from .correlation import *
 from .multi_dim_gle import *
-from .gle_2d_sim import *
+from .gle_nd_sim import *
 from .get_nd_force_array import *
-
+from .gle_2d_sim_bounds import *
+from .gle_1d_sim_multi_exp import *
 
 def ver():
     """
     Show the module version.
     """
-    print("This is multi_mems version 1.6")
+    print("This is multi_mems version 1.7")
 
 
 def xframe(x, time, fix_time=True, round_time=1.e-5, dt=-1):

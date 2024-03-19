@@ -217,14 +217,14 @@ class multi_dim_gle:
                 plt.plot(t,v_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{vv}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
                 
                 plt.plot(t,xU_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{Fx}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
 
@@ -237,7 +237,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,v_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{vv}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -251,7 +251,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,xU_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{Fx}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -423,7 +423,7 @@ class multi_dim_gle:
                 plt.plot(t[:-1],kernel_matrix.T[0][0][:-1], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$\Gamma$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
 
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -438,7 +438,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t[:-1],kernel_matrix.T[j][i][:-1], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$\Gamma_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -754,35 +754,35 @@ class multi_dim_gle:
                 plt.plot(t,v_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{vv}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
                 
                 plt.plot(t,a_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{aa}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
 
                 plt.plot(t,va_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{va}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
 
                 plt.plot(t,vU_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{Fv}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
 
                 plt.plot(t,aU_corr_matrix.T[0][0], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$C^{Fa}$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
                 plt.show()
 
@@ -795,7 +795,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,v_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{vv}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -809,7 +809,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,va_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{va}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -823,7 +823,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,a_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{aa}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -837,7 +837,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,vU_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{vF}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -851,7 +851,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t,aU_corr_matrix.T[j][i], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$C^{aF}_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -954,7 +954,7 @@ class multi_dim_gle:
                 plt.plot(t[:-1],kernel_matrix.T[0][0][:-1], color = 'k')
                 plt.xscale('log')
                 plt.ylabel(r'$\Gamma$ [a.u.]')
-                plt.xlabel('t')
+                plt.xlabel(r'$t$')
 
                 plt.axhline(y = 0, linestyle = '--', color = 'k')
 
@@ -969,7 +969,7 @@ class multi_dim_gle:
                         ax[i][j].plot(t[:-1],kernel_matrix.T[j][i][:-1], color = 'k')
                         ax[i][j].set_xscale('log')
                         ax[i][j].set_ylabel(r'$\Gamma_{%s%s}$ [a.u.]' % (i+1, j+1))
-                        ax[i][j].set_xlabel('t')
+                        ax[i][j].set_xlabel(r'$t$')
 
                         ax[i][j].axhline(y = 0, linestyle = '--', color = 'k')
 
