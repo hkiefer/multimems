@@ -155,7 +155,7 @@ def integrate_gle_3_dim_exp(x0,v0, y0,ks, gammas, mass,nsteps, dt, kT,force_bins
     return x,vv,yy
 
 @njit()
-def integrate_langevin_multi_dim(x0,v0, gammas, mass,nsteps, dt, kT,force_bins,force_matrix,fr_mode=1,uncorr_fr = True):
+def integrate_langevin_3_dim(x0,v0, gammas, mass,nsteps, dt, kT,force_bins,force_matrix,fr_mode=1,uncorr_fr = True):
     
     n_dim = x0.shape[0]
 
