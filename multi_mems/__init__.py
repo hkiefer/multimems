@@ -7,10 +7,13 @@ from collections import OrderedDict
 
 from .correlation import *
 from .multi_dim_gle import *
-from .gle_nd_sim import *
+
 from .get_nd_force_array import *
-from .gle_2d_sim_bounds import *
+from .gle_nd_sim_multi_exp_unstable import *
+from .gle_2d_sim_multi_exp_bounds import *
 from .gle_1d_sim_multi_exp import *
+from .gle_2d_sim_multi_exp import *
+from .gle_3d_sim_multi_exp import *
 
 def ver():
     """
