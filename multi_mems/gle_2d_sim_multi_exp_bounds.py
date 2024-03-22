@@ -277,12 +277,13 @@ def dU2(x,force_bins,force_matrix,force_max,force_min,x1max,x2max,x1min,x2min):
 
         if len(x) < 2:
             value[i] = force_matrix[i].T[idx1][0]
+            #value[i] = force_matrix[i][idx1][0]
 
         else:
             idx2 = bisection(force_bins[1],x[1])
-            x_max = np.array([x1max,x2max]) #larger value see large barrier
 
-            x_min= np.array([x1min,x2min]) #smaller value see large barrier
+            x_max = np.array([x1max,x2max]) #larger values see large barrier
+            x_min= np.array([x1min,x2min]) #smaller values see large barrier
 
             if x_min[i] > x[i]:
 
