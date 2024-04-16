@@ -131,6 +131,9 @@ class multi_dim_gle:
                     else:
                         pos, hist, fe, xfine, fe_fine, force_array = self.extract_free_energy(xvaf['x_' + str(j+1)])
                         xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(i+1)],force_array)[:tmax]
+                        #pos, hist, fe, xfine, fe_fine, force_array = self.extract_free_energy(xvaf['x_' + str(i+1)])
+                        #xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(j+1)],force_array)[:tmax]
+
 
         elif self.free_energy == 'MV':
             
@@ -162,13 +165,12 @@ class multi_dim_gle:
             
             for i in range(0,self.n_dim):
                 for j in range(0, self.n_dim): 
-                    #xU_corr_matrix.T[i][j] = correlation(xvaf['x_' + str(i+1)],force_array.T[j])[:tmax]
-                    #xU_corr_matrix.T[j][i] = correlation(force_array.T[j],xvaf['x_' + str(i+1)])[:tmax]
 
                     if dir == 0: #should don't matter in principle, but could improve the stability
                         xU_corr_matrix.T[j][i] = correlation(force_array.T[i],xvaf['x_' + str(j+1)])[:tmax]
                     else:
                         xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(i+1)],force_array.T[j])[:tmax]
+                        #xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(j+1)],force_array.T[i])[:tmax]
 
         elif self.free_energy == "Mori":
             if self.verbose:
@@ -202,6 +204,7 @@ class multi_dim_gle:
 
                     else:
                         xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(i+1)]-np.mean(xvaf['x_' + str(i+1)]),self.k_matrix[j][j]*(xvaf['x_' + str(j+1)]-np.mean(xvaf['x_' + str(j+1)])))[:tmax]
+                        #xU_corr_matrix.T[j][i] = correlation(xvaf['x_' + str(j+1)]-np.mean(xvaf['x_' + str(j+1)]),self.k_matrix[i][i]*(xvaf['x_' + str(i+1)]-np.mean(xvaf['x_' + str(i+1)])))[:tmax]
 
                          
         t = np.arange(0,len(v_corr_matrix)*self.dt,self.dt)
@@ -671,6 +674,9 @@ class multi_dim_gle:
                         pos, hist, fe, xfine, fe_fine, force_array = self.extract_free_energy(xvaf['x_' + str(j+1)])
                         vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(i+1)],force_array)[:tmax]
                         aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(i+1)],force_array)[:tmax]
+                        #pos, hist, fe, xfine, fe_fine, force_array = self.extract_free_energy(xvaf['x_' + str(i+1)])
+                        #vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(j+1)],force_array)[:tmax]
+                        #aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(j+1)],force_array)[:tmax]
 
                    
 
@@ -710,6 +716,9 @@ class multi_dim_gle:
                     else:
                         vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(i+1)],force_array.T[j],)[:tmax]
                         aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(i+1)],force_array.T[j],)[:tmax]
+                        #vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(j+1)],force_array.T[i],)[:tmax]
+                        #aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(j+1)],force_array.T[i],)[:tmax]
+
 
         elif self.free_energy == "Mori":
 
@@ -750,6 +759,8 @@ class multi_dim_gle:
                     else:
                         vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(i+1)]-np.mean(xvaf['v_' + str(i+1)]),self.k_matrix[j][j]*(xvaf['x_' + str(j+1)]-np.mean(xvaf['x_' + str(j+1)])))[:tmax]
                         aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(i+1)]-np.mean(xvaf['a_' + str(i+1)]),self.k_matrix[j][j]*(xvaf['x_' + str(j+1)]-np.mean(xvaf['x_' + str(j+1)])))[:tmax]
+                        #vU_corr_matrix.T[j][i] = correlation(xvaf['v_' + str(j+1)]-np.mean(xvaf['v_' + str(j+1)]),self.k_matrix[i][i]*(xvaf['x_' + str(i+1)]-np.mean(xvaf['x_' + str(i+1)])))[:tmax]
+                        #aU_corr_matrix.T[j][i] = correlation(xvaf['a_' + str(j+1)]-np.mean(xvaf['a_' + str(j+1)]),self.k_matrix[i][i]*(xvaf['x_' + str(i+1)]-np.mean(xvaf['x_' + str(i+1)])))[:tmax]
 
                       
         t = np.arange(0,len(v_corr_matrix)*self.dt,self.dt)
