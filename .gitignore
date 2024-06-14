@@ -11,3 +11,9 @@
 .idea
 .vscode
 
+__pycache__/
+*.py[cod]
+build/
+.eggs/
+multi_mems.egg-info/
+
