@@ -17,23 +17,25 @@ class multi_dim_gle:
     
     def __init__(self, trunc, bins = 32, kT =2.494, free_energy = 'MV', verbose = True,plot = False,symm_matr = False,physical = True,diagonal_mass =False,force_funcs = None):
         
-        self.trunc = trunc #depth of memory kernel entries
-        self.bins = bins #number of bins for the histogram (potential-extraction)
+        self.trunc = trunc #(int) depth of memory kernel entries 
+        self.bins = bins #(int) number of bins for the histogram (potential-extraction) 
   
-        self.kT = kT #thermal energy of system in atomic units
-        self.physical = physical
-        self.symm_matr = symm_matr #we assume that v_acf on off-diagonal entries are the same (12 = 21, etc.)
+        self.kT = kT #(float) thermal energy of system in atomic units 
+        self.physical = physical #(bool) if True, the thermal energy is used as kT, otherwise a GLE without mass is assumed
+        self.symm_matr = symm_matr #(bool) we assume that v_acf on off-diagonal entries are the same (12 = 21, etc.)
         #self.kT_init = kT #ony for physical
-        self.free_energy = free_energy #enables inclusion of mean force team in GLE, #if MV: Conditional Probability, #if ADD: Additional Assumption U(x1,x2,...) = U(x1) + U(x2) + ...
-        self.verbose = verbose
-        self.plot = plot #option to plot the resuls by matplotlib
-        self.diagonal_mass = diagonal_mass #avoids additional coupling between observables
-        self.force_funcs = force_funcs #if we already know the analytical shape of the potential landscape, we do not need to compute and interpolate it via the data
-        
-        
+        self.free_energy = free_energy #(str) enables inclusion of mean force team in GLE, #if MV: Conditional Probability, #if ADD: Additional Assumption U(x1,x2,...) = U(x1) + U(x2) + ...
+        self.verbose = verbose #(bool) if True, print additional information
+        self.plot = plot #(bool) option to plot the resuls by matplotlib
+        self.diagonal_mass = diagonal_mass #(bool) avoids additional coupling between observables
+        self.force_funcs = force_funcs #(float) if we already know the analytical shape of the potential landscape, we do not need to compute and interpolate it via the data
         
         
     def compute_free_energy_landscape(self,xvaf):
+        """
+        Computes the free energy landscape of the system
+        :param xvaf: pandas DataFrame with columns x1, v1, a1, x2, v2, a2, ...
+        """
         self.n_dim = xvaf.filter(regex='^x',axis=1).shape[1]
 
         if self.free_energy == 'ADD': #1D Potentials
@@ -76,8 +78,14 @@ class multi_dim_gle:
             fe_arrays = None
         return pos_arrays,fe_arrays
     
-    #https://www.pnas.org/doi/abs/10.1073/pnas.2023856118
-    def compute_correlations_G(self,xvaf,normalize_force_corr=False,dir=0): #all columns of xvaf has to include the same time steps!!
+    #see: https://www.pnas.org/doi/abs/10.1073/pnas.2023856118 for infos on Volterra extraction
+    def compute_correlations_G(self,xvaf,normalize_force_corr=False,dir=0): #all columns of xvaf have to include the same time steps!!
+        """
+        computes the correlation functions of the system needed for the G-method
+        :param xvaf: pandas DataFrame with columns x1, v1, a1, x2, v2, a2, ...
+        :param normalize_force_corr: if True, the force correlation functions are normalized by the diagonal elements
+        :param dir: if 0, the force correlation functions are calculated as C^{Fx}, if 1 as C^{xF}
+        """
         #if mkl: #uses faster correlation function, but need to installed first
             #correlation = correlation_fast
         #self.n_dim = int(xvaf.shape[1]/4)
@@ -276,6 +284,15 @@ class multi_dim_gle:
     #the memory matrix extraction
     #https://www.pnas.org/doi/abs/10.1073/pnas.2023856118
     def compute_kernel_mat_G(self,v_corr_matrix,xU_corr_matrix,first_kind = True, d  = 0,multiprocessing=1,half_stepped=False):
+        """
+        computes the memory kernel matrix of the system
+        :param v_corr_matrix: correlation matrix of the velocities
+        :param xU_corr_matrix: correlation matrix of the forces
+        :param first_kind: if True, the first kind of Volterra equation is used
+        :param d: if 1, the first derivative of the memory kernel is calculated via finite differences, if 2, a predictor-corrector scheme is used, else the central difference is used
+        :param multiprocessing: if 1, the einsum function is used, else the einsumt function is used (parallelized)
+        :param half_stepped: if True, a half-stepped scheme to obtain G-matrix is used
+        """
         tmax=int(self.trunc/self.dt)
         ikernel_matrix = np.zeros([tmax,self.n_dim,self.n_dim])
         kernel_matrix = np.zeros([tmax,self.n_dim,self.n_dim])
@@ -461,6 +478,10 @@ class multi_dim_gle:
 
     #https://github.com/kb-press/ndsplines
     def extract_free_energy_nD(self,xx):
+        """
+        Computes the multi-dimensional free energy landscape of the system
+        :param xx: position numpy array with shape (n_samples, n_dim)
+        """
         self.n_dim = xx.shape[1]
 
         #multi_d histogram
@@ -509,6 +530,11 @@ class multi_dim_gle:
         return pos,hist,fe,mesh,interp,mesh_fine,fe_fine,force_funcs
     
     def get_du_nD(self,pos,fe):
+        """
+        Computes the continuous force functions of the system for correlation function extraction
+        :param pos: position numpy array with shape (n_samples, n_dim)
+        :param fe: free energy numpy array with shape (n_samples)"""
+
         self.n_dim = len(pos)
 
         fe[np.where(fe == np.inf)] = np.nanmax(fe[fe != np.inf]) #in general zero
@@ -546,6 +572,10 @@ class multi_dim_gle:
         return mesh,interp,mesh_fine,fe_fine,force_funcs
     
     def extract_free_energy(self,x): 
+        """
+        Computes the 1D free energy landscape of the system
+        :param x: position numpy array with shape (n_samples)
+        """
         #one-dimensional, we assume the potential landscape to be additive, i.e. U(x) = U(x1) + ..+ U(xn)
         hist,edges=np.histogram(x, bins=self.bins, density=True)
         pos =(edges[1:]+edges[:-1])/2
@@ -572,6 +602,11 @@ class multi_dim_gle:
     
     
     def extract_free_energy_2D(self,x1,x2):
+        """
+        Computes the 2D free energy landscape of the system (typically not needed)
+        :param x1: position numpy array with shape (n_samples)
+        :param x2: position numpy array with shape (n_samples)
+        """
         
         hist, pos1, pos2 = np.histogram2d(x1, x2, bins=(self.bins, self.bins))
 
@@ -626,7 +661,11 @@ class multi_dim_gle:
     #Jan Daldrop's method 
     #https://www.pnas.org/doi/abs/10.1073/pnas.1722327115
 
-    def compute_correlations_direct(self,xvaf,dir=1): #all columns of xvaf has to include the same time steps!!
+    def compute_correlations_direct(self,xvaf,dir=1): #all columns of xvaf have to include the same time steps!!
+        """
+        Computes the correlation functions of the system
+        :param xvaf: pandas dataframe with columns 'x_1', 'x_2', 'v_1', 'v_2', 'a_1', 'a_2'...
+        :param dir: if 0, the force is calculated from the position, if 1, the force is calculated from the velocity"""
         #if mkl: #uses faster correlation function, but need to installed first
             #correlation = correlation_fast
         #self.n_dim = int(xvaf.shape[1]/4)
@@ -891,7 +930,16 @@ class multi_dim_gle:
         return t, v_corr_matrix,va_corr_matrix,a_corr_matrix,vU_corr_matrix,aU_corr_matrix, force_funcs
 
     def compute_kernel_mat_direct(self,v_corr_matrix,va_corr_matrix,a_corr_matrix,vU_corr_matrix,aU_corr_matrix,first_kind = True,multiprocessing=1,correct=True):
-        
+        """
+        Computes the memory kernel matrix of the system
+        :param v_corr_matrix: velocity correlation matrix
+        :param va_corr_matrix: velocity-acceleration correlation matrix
+        :param a_corr_matrix: acceleration correlation matrix
+        :param vU_corr_matrix: velocity-force correlation matrix
+        :param aU_corr_matrix: acceleration-force correlation matrix
+        :param first_kind: if True, memory kernel is calculated with first-kind formula (recommended), if False, the second kind is calculated
+        :param multiprocessing: if 1, the einsum function is used, else the einsumt function is used (parallelized)
+        :param correct: if True, the memory kernel is corrected by numerical integeration and differentiation"""
     
         tmax=int(self.trunc/self.dt)
         ikernel_matrix = np.zeros([tmax,self.n_dim,self.n_dim])
@@ -1010,6 +1058,15 @@ class multi_dim_gle:
     
 
     def smooth_data(self,t,data,start=0,end = -1,step =1):
+        """
+        Smoothes the data with averaging and a following spline interpolation
+        :param t: time array
+        :param data: data array
+        :param start: start index
+        :param end: end index
+        :param step: step size
+        """
+
         x = data.copy()
         if end == -1:
             end = len(x)

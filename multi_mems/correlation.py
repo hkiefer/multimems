@@ -2,6 +2,13 @@ import numpy as np
 import pandas as pd
 
 def correlation(a,b=None,subtract_mean=False):
+    """
+    Computes time-correlation function of two 1D arrays a and b
+    :param a: 1D array
+    :param b: 1D array, if not provided, auto-correlation of a is computed
+    :param subtract_mean: if True, subtracts the mean of the arrays
+    """
+
     meana = int(subtract_mean)*np.mean(a)
     a2 = np.append(a-meana,
 np.zeros(2**int(np.ceil((np.log(len(a))/np.log(2))))-len(a)))
@@ -21,6 +28,9 @@ np.zeros(2**int(np.ceil((np.log(len(b))/np.log(2))))-len(b)))
     return cor
 
 def pdcorr(df,f1,f2,trunc=None,oname="c"):
+    """
+    Computes the correlation function of two columns of a DataFrame
+    """
     a=df.loc[:,f1].values
     if f1 == f2:
         corr=correlation(a)

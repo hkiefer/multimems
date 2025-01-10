@@ -1,4 +1,4 @@
-# Multimens
+# Multimems
 
 Python 3 tool suite for the computation of memory kernel matrices in a multi-dimensional generalized Langevin equation (GLE) from a set of time series data. A publication about the multi-dimensional GLE is in preparation and will be published soon.
 
