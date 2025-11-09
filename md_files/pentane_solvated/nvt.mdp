@@ -1,0 +1,71 @@
+; Running Parameters ===============================================
+integrator               = md	    ; leap-frog integrator
+nsteps                   = 50000  ; 50000000 = 100 ns
+dt                       = 0.002    ; fs
+
+; Output control ===================================================
+nstxout-compressed       = 1
+xtc-grps                 = ALK
+xtc-precision            = 1000000
+nstlog                   = 250000
+
+; Constraints ======================================================
+constraints              = all-angles
+constraint-algorithm     = SHAKE
+;shake-tol                = 0.0001
+;constraints              = h-bonds
+;constraint-algorithm     = lincs
+
+; freeze group
+; freezegrps      = freeze
+; freezedim       = Y Y Y
+
+; comm-mode = none
+
+; Neighborsearching ===============================================
+cutoff-scheme            = Verlet
+ns_type                  = grid
+rlist                    = 1.0
+nstlist                  = 10 ; neighbour list calculate
+
+; VdW and electrostatics ===========================================
+rvdw                     = 1.0
+rvdw-switch              = 1.0
+rcoulomb                 = 1.0
+rcoulomb-switch          = 0
+periodic_molecules       = no
+coulombtype              = pme
+vdw-modifier             = Potential-shift
+
+; velocity generation
+gen_vel                  = no
+
+; Dispersion correction
+DispCorr                 = EnerPres
+
+; Temperature Coupling =============================================
+tcoupl                   = v-rescale ; modified Berendsen thermostat
+ld_seed                  = -1
+tau_t                    =  1.0 
+ref_t                    =  300.0
+tc_grps                  =  System
+
+; Pressure Coupling ================================================
+Pcoupl                   = no
+;compressibility          = 4.5E-5  
+;tau_p                    = 1.0 
+;ref_p                    = 1.01325
+;Pcoupltype               = isotropic
+
+; FFT grid size, when a value is 0 fourierspacing will be used
+fourierspacing           = 0.12
+fourier_nx               = 0
+fourier_ny               = 0
+fourier_nz               = 0
+
+; EWALD/PME/PPPM parameters =====================================
+pme_order                = 4
+ewald_rtol               = 1e-04
+ewald_geometry           = 3d
+epsilon_surface          = 0
+optimize_fft             = no

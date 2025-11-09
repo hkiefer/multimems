@@ -1,0 +1,62 @@
+; Running Parameters
+; ===================================================================
+integrator    = md
+nsteps        = 100000        ; 20ns
+dt            = 0.001          ; in picoseconds
+;define        = -DFLEXIBLE
+
+; Output control
+; ===================================================================
+nstxout  	= 0 
+nstenergy	= 0
+
+; Constraints
+; ===================================================================
+; constraints              = all-angles
+; constraint-algorithm     = shake
+constraints              = h-bonds
+constraint-algorithm     = lincs
+
+; freeze group
+; freezegrps      = freeze
+; freezedim       = Y Y Y
+
+; comm-mode = none
+
+; neighbor searching
+; ===================================================================
+ns_type         = grid
+cutoff-scheme   = verlet            ; standard cutoff scheme
+rlist           = 1.0               ; cut-off distance for the short-range neighbor list - with Verlet ignored!
+pbc             = xyz               ; Periodic Boundary Conditions (yes/no)
+
+; Electrostatics
+; ===================================================================
+coulombtype     = pme
+rcoulomb        = 1.0               ; distance for the Coulomb cut-off
+fourierspacing  = 0.1               ; This should give an accuracy of about 2-3*10^-4
+pme-order       = 4;
+ewald-geometry  = 3d
+
+; VdW
+; ===================================================================
+vdw-modifier    = force-switch
+DispCorr        = EnerPres
+rvdw            = 1.0               ; distance for the Van-der-Whaal cut-off
+rvdw-switch 	= 0.9
+
+; Temperature Coupling
+; ===================================================================
+tcoupl           = v-rescale
+tc_grps          = system
+tau_t            = 1.0 
+ref_t            = 300.00
+
+; Pressure Coupling
+; ===================================================================
+pcoupl           = Berendsen 
+pcoupltype       = isotropic
+ref-p            = 1.0
+tau-p            = 1.0
+compressibility  = 4.5e-5
+; refcoord_scaling    = com

@@ -1,0 +1,46 @@
+; Running Parameters
+; ===================================================================
+integrator    = steep
+nsteps        = 500000        ; steps: 50000 => 5ns
+dt            = 0.002          ; in picoseconds
+;define        = -DFLEXIBLE
+
+; Output control
+; ===================================================================
+nstxout  = 20000 
+nstvout  = 20000
+
+; Constraints
+; ===================================================================
+constraint-algorithm    = LINCS
+constraints             = all-bonds
+
+; freeze group
+; freezegrps      = freeze
+; freezedim       = Y Y Y
+
+; comm-mode = none
+
+; neighbor searching
+; ===================================================================
+ns_type         = grid
+
+cutoff-scheme   = verlet            ; standard cutoff scheme
+rlist           = 0.9               ; cut-off distance for the short-range neighbor list - with Verlet ignored!
+pbc             = xyz               ; Periodic Boundary Conditions (yes/no)
+
+; Electrostatics
+; ===================================================================
+coulombtype     = pme
+rcoulomb        = 0.9               ; distance for the Coulomb cut-off
+fourierspacing  = 0.1               ; This should give an accuracy of about 2-3*10^-4
+pme-order       = 4;
+ewald-geometry  = 3d
+
+; VdW
+; ===================================================================
+vdw-type 	= Cut-off
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = no
+rvdw            = 0.9               ; distance for the Van-der-Whaal cut-off
+
